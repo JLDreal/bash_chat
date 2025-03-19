@@ -1,0 +1,21 @@
+#!/bin/bash
+c_path="/home/dvs/jschlich/script"
+cn="$1"
+last="[[safdsafdsfcxvcx}}"
+user=$HOME
+
+
+while true
+do
+
+			sleep 1.5
+			message=$("$c_path/msg" -c $cn -n 1)	
+			if [ "$message" != "$last" ]
+			then 
+				echo "$message"
+				last="$message"
+			fi
+	
+done
+
+

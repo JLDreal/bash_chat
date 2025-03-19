@@ -1,0 +1,85 @@
+#!/bin/bash
+RED="tput setaf 6"
+NC="tput sgr0"
+c_path="/home/dvs/jschlich/script"
+chat="xyü0p"
+hpath=$HOME
+upath="$hpath/bin"
+clear
+
+while getopts "hc:" opt
+do
+	case $opt in
+		h) echo "
+
+$($RED)
+███    ███ ███████ ███████ ███████  █████   ██████  ███████ ██████   ██████  ██████  ███████ ██████  
+████  ████ ██      ██      ██      ██   ██ ██       ██      ██   ██ ██    ██ ██   ██ ██      ██   ██ 
+██ ████ ██ █████   ███████ ███████ ███████ ██   ███ █████   ██████  ██    ██ ██████  █████   ██   ██ 
+██  ██  ██ ██           ██      ██ ██   ██ ██    ██ ██      ██   ██ ██    ██ ██   ██ ██      ██   ██ 
+██      ██ ███████ ███████ ███████ ██   ██  ██████  ███████ ██████   ██████  ██   ██ ███████ ██████  
+$($NC)
+(I was bored so you can chat)                          
+
+
+to exit use EXIT in all caps (or the deamon will run till exited propperly idc)
+Inside the chat just type your message.
+
+-c chatname
+
+
+
+
+----" 
+exit;;
+
+		c) chat=$OPTARG;;
+	esac
+done
+
+if [ $chat = "xyü0p" ]
+
+	then
+		$c_path/messagebored -h
+		exit
+	else 
+		$c_path/messagebored -h
+
+		
+fi
+user=$(echo "$hpath" | cut -d"/" -f 4)
+ln -s -f "$c_path/../bin/chatnot" "$upath/chatnot" > "$c_path/.tmperr"
+
+is_pid=$(ps aux | grep "chatnot"| grep "pts/" | grep -v "grep" | cut -d"/" -f 1 | grep "$user") 
+echo $is_pid
+if  [ -z "$is_pid" ]
+
+	then
+		"$c_path/chatnot" "$chat" &
+		imp_pid=$!
+		RED="tput setaf 1"
+		echo "$($RED)started deamon for $chat $($NC)"
+	else
+	    imp_pid=$(echo "$is_pid" | cut -d"." -f 1 | cut -c 9-16)
+
+fi
+
+while true 
+do 
+	sleep 1
+	
+	read -r line
+
+	if [ "$line" =  "EXIT" ]
+
+		then
+			kill "$imp_pid"
+			clear
+
+			exit
+	fi
+
+	$c_path/msg -c "$chat" -m "$line"
+
+done
+
